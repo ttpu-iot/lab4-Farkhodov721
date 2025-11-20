@@ -28,6 +28,7 @@ const int GREEN_PIN = 27;
 const int BLUE_PIN = 14;
 const int YELLOW_PIN = 12;
 const int Buzzer_PIN = 32;
+const int BUTTON_PIN = 25;
 
 const int SERVO_PIN = 5;
 
@@ -119,6 +120,7 @@ void setup(void)
     // ledcSetup(0, buzzer_frequency, 8);
     // ledcAttachPin(Buzzer_PIN, 0);
 
+    pinMode(BUTTON_PIN, INPUT);
 
     myServo.attach(SERVO_PIN);
 
@@ -149,6 +151,24 @@ void setup(void)
 void loop(void) 
 {
     Blynk.run();
+
+    // Detect button press and release - to send value to V4 - button is active HIGH
+    static bool lastButtonState = LOW;
+    bool currentButtonState = digitalRead(BUTTON_PIN);
+    static uint32_t lastDebounceTime = 0;
+    
+    if (currentButtonState != lastButtonState && (millis() - lastDebounceTime) > 100) {
+        if (currentButtonState == HIGH) {
+            Blynk.virtualWrite(V4, 1); // Button pressed
+            Serial.println("Button Pressed - V4 set to 1");
+        } else {
+            Blynk.virtualWrite(V4, 0); // Button released
+            Serial.println("Button Released - V4 set to 0");
+        }
+        lastButtonState = currentButtonState;
+        lastDebounceTime = millis();
+    }
+    
 
     static uint32_t startTime = millis();
     static bool lastBuzzerStatus = false;
