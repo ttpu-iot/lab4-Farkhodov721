@@ -18,7 +18,7 @@
 #include <Wire.h>
 #include <hd44780.h>
 #include <hd44780ioClass/hd44780_I2Cexp.h>
-
+#include <ESP32Servo.h>
 
 //----------------------------------------------
 // GLOBAL VARIABLES and CONSTANTS
@@ -29,6 +29,9 @@ const int BLUE_PIN = 14;
 const int YELLOW_PIN = 12;
 const int Buzzer_PIN = 32;
 
+const int SERVO_PIN = 5;
+
+Servo myServo;
 // LCD Configuration
 hd44780_I2Cexp lcd;  // Auto-detect I2C address
 const int LCD_COLS = 16;
@@ -42,6 +45,7 @@ char pass[] = "";
 // char pass[] = "polito2025";
 int buzzer_frequency = 1000;
 bool buzzer_status = false;
+
 //----------------------------------------------
 // FUNCTIONS
 BLYNK_WRITE(V1)
@@ -71,6 +75,14 @@ BLYNK_WRITE(V7)
 {   
   int value = param.asInt();
   buzzer_frequency = value; // Get value as integer
+}
+
+BLYNK_WRITE(V8)
+{   
+  int value = param.asInt();
+  myServo.write(value);
+  Serial.print("Servo Angle: ");
+  Serial.println(value);
 }
 
 BLYNK_WRITE(V3)
@@ -106,6 +118,9 @@ void setup(void)
     pinMode(Buzzer_PIN, OUTPUT);
     ledcSetup(0, buzzer_frequency, 8);
     ledcAttachPin(Buzzer_PIN, 0);
+
+
+    myServo.attach(SERVO_PIN,500,2400);
 
     // Initialize LCD
     int status = lcd.begin(LCD_COLS, LCD_ROWS);
