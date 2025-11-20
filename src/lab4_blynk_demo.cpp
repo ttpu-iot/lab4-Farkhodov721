@@ -27,6 +27,7 @@ const int RED_PIN = 26;
 const int GREEN_PIN = 27;
 const int BLUE_PIN = 14;
 const int YELLOW_PIN = 12;
+const int Buzzer_PIN = 32;
 
 // LCD Configuration
 hd44780_I2Cexp lcd;  // Auto-detect I2C address
@@ -39,7 +40,7 @@ char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
 // char ssid[] = "MaxPC";
 // char pass[] = "polito2025";
-
+int buzzer_frequency = 1000;
 //----------------------------------------------
 // FUNCTIONS
 BLYNK_WRITE(V1)
@@ -63,6 +64,24 @@ BLYNK_WRITE(V6)
   int value = param.asInt(); // Get value as integer
   digitalWrite(YELLOW_PIN, value);
 }
+
+
+BLYNK_WRITE(V7)
+{   
+  int value = param.asInt();
+  buzzer_frequency = value; // Get value as integer
+}
+
+BLYNK_WRITE(V3)
+{   
+  int value = param.asInt();
+  if (value == 1){
+    ledcWriteTone(0, buzzer_frequency); // Start buzzer at specified frequency
+  } else {
+    ledcWriteTone(0, 0); // Stop buzzer
+  }
+}
+
 //----------------------------------------------
 // SETUP FUNCTION
 void setup(void) 
@@ -77,6 +96,9 @@ void setup(void)
     pinMode(GREEN_PIN, OUTPUT);
     pinMode(BLUE_PIN, OUTPUT);
     pinMode(YELLOW_PIN, OUTPUT);
+    pinMode(Buzzer_PIN, OUTPUT);
+    ledcSetup(0, buzzer_frequency, 8);
+    ledcAttachPin(Buzzer_PIN, 0);
 
     // Initialize LCD
     int status = lcd.begin(LCD_COLS, LCD_ROWS);
@@ -105,4 +127,6 @@ void setup(void)
 void loop(void) 
 {
     Blynk.run();
+
+   
 }
