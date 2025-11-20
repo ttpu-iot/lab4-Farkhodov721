@@ -3,9 +3,9 @@
 
 
 /* Fill-in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL2rkMzqzyl"
-#define BLYNK_TEMPLATE_NAME "IoT25 ESP32 Template"
-#define BLYNK_AUTH_TOKEN "QaW1JxlrB6rwLC0YXZutzip6dwYsv7HZ"
+#define BLYNK_TEMPLATE_ID "TMPL6RMFIQUqi"
+#define BLYNK_TEMPLATE_NAME "Polito"
+#define BLYNK_AUTH_TOKEN "zXcUh_D9FicRvXG_CQuEb2QlAmopJlIg"
 
 /* Comment this out to disable prints and save space */
 #define BLYNK_PRINT Serial
@@ -42,12 +42,27 @@ char pass[] = "";
 
 //----------------------------------------------
 // FUNCTIONS
-BLYNK_WRITE(V0)
+BLYNK_WRITE(V1)
 {   
   int value = param.asInt(); // Get value as integer
   digitalWrite(RED_PIN, value);
 }
+BLYNK_WRITE(V2)
+{   
+  int value = param.asInt(); // Get value as integer
+  digitalWrite(GREEN_PIN, value);
+}
+BLYNK_WRITE(V5)
+{   
+  int value = param.asInt(); // Get value as integer
+  digitalWrite(BLUE_PIN, value);
+}
 
+BLYNK_WRITE(V6)
+{   
+  int value = param.asInt(); // Get value as integer
+  digitalWrite(YELLOW_PIN, value);
+}
 //----------------------------------------------
 // SETUP FUNCTION
 void setup(void) 
