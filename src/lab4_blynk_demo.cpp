@@ -88,17 +88,17 @@ BLYNK_WRITE(V8)
 BLYNK_WRITE(V3)
 {   
   int value = param.asInt();
-  if (value == 1){
-    ledcWriteTone(0, buzzer_frequency); // Start buzzer at specified frequency
-    buzzer_status  = true;
-    Serial.println("Buzzer ON");
-    Serial.print("Frequency: ");
-    Serial.println(buzzer_frequency);
-  } else {
-    ledcWriteTone(0, 0); // Stop buzzer
-    buzzer_status  = false;
-    Serial.println("Buzzer OFF");
-  }
+  // if (value == 1){
+  //   ledcWriteTone(0, buzzer_frequency); // Start buzzer at specified frequency
+  //   buzzer_status  = true;
+  //   Serial.println("Buzzer ON");
+  //   Serial.print("Frequency: ");
+  //   Serial.println(buzzer_frequency);
+  // } else {
+  //   ledcWriteTone(0, 0); // Stop buzzer
+  //   buzzer_status  = false;
+  //   Serial.println("Buzzer OFF");
+  // }
 }
 
 //----------------------------------------------
@@ -116,11 +116,11 @@ void setup(void)
     pinMode(BLUE_PIN, OUTPUT);
     pinMode(YELLOW_PIN, OUTPUT);
     pinMode(Buzzer_PIN, OUTPUT);
-    ledcSetup(0, buzzer_frequency, 8);
-    ledcAttachPin(Buzzer_PIN, 0);
+    // ledcSetup(0, buzzer_frequency, 8);
+    // ledcAttachPin(Buzzer_PIN, 0);
 
 
-    myServo.attach(SERVO_PIN,500,2400);
+    myServo.attach(SERVO_PIN);
 
     // Initialize LCD
     int status = lcd.begin(LCD_COLS, LCD_ROWS);
@@ -153,17 +153,17 @@ void loop(void)
     static uint32_t startTime = millis();
     static bool lastBuzzerStatus = false;
 
-    if (buzzer_status == true && lastBuzzerStatus == false) {
-        startTime = millis();
-        lastBuzzerStatus = true;
-    } else if (buzzer_status == false) {
-        lastBuzzerStatus = false;
-    }
+    // if (buzzer_status == true && lastBuzzerStatus == false) {
+    //     startTime = millis();
+    //     lastBuzzerStatus = true;
+    // } else if (buzzer_status == false) {
+    //     lastBuzzerStatus = false;
+    // }
 
-    if (millis() - startTime >= 2000 && buzzer_status == true) {
-        // Stop the buzzer after 2 seconds
-        ledcWriteTone(0, 0);
-        buzzer_status = false;
-        lastBuzzerStatus = false;
-    }
+    // if (millis() - startTime >= 2000 && buzzer_status == true) {
+    //     // Stop the buzzer after 2 seconds
+    //     ledcWriteTone(0, 0);
+    //     buzzer_status = false;
+    //     lastBuzzerStatus = false;
+    // }
 }
